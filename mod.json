@@ -9,5 +9,14 @@
 	"id": "alphalaneous.ezclipboard",
 	"name": "EZ Clipboard",
 	"developer": "Alphalaneous",
-	"description": "Adds buttons for copying and pasting in text areas."
+	"description": "Adds buttons for copying and pasting in text areas.",
+	"settings": {
+		"enable-buttons": {
+			"name": "Enable Buttons",
+			"type": "bool",
+			"default": false,
+			"description": "Enables the Copy and Paste buttons on Windows. By default, this is off and instead uses the Ctrl+C and Ctrl+V keybinds",
+			"platforms": ["windows"]
+		}
+	}
 }
