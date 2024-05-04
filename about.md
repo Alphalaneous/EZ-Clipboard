@@ -1,3 +1,3 @@
-# Template Mod
+# EZ Clipboard
 
-Edit about.md to change this
+Adds buttons for copying and pasting in text areas.
