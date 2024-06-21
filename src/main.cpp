@@ -43,9 +43,12 @@ class $modify(MyCCTextInputNode, CCTextInputNode) {
 
 		specialButtons->setLayout(layout);
 
-		CCSprite* copySpr = ButtonSprite::create("C", 10, true, "goldFont.fnt", "square02_small.png", 20, 1);
-		CCSprite* pasteSpr = ButtonSprite::create("P", 10, true, "goldFont.fnt", "square02_small.png", 20, 1);
+		CCSprite* copySpr = ButtonSprite::create("C", 40, true, "goldFont.fnt", "square02_small.png", 40, 1);
+		CCSprite* pasteSpr = ButtonSprite::create("P", 40, true, "goldFont.fnt", "square02_small.png", 40, 1);
 		
+		copySpr->setScale(0.5f);
+		pasteSpr->setScale(0.5f);
+
 		CCScale9Sprite* copyBg = getChildOfType<CCScale9Sprite>(copySpr, 0);
 		CCScale9Sprite* pasteBg = getChildOfType<CCScale9Sprite>(pasteSpr, 0);
 
