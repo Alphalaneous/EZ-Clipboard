@@ -23,5 +23,12 @@
         "homepage": "https://twitter.com/alphalaneous",
         "source": "https://github.com/Alphalaneous/EZ-Clipboard",
         "community": "https://discord.gg/Txn2CA5dHF"
-    }
+    },
+	"dependencies": [
+		{
+            "id": "alphalaneous.alphas_geode_utils",
+            "version": ">=v1.0.3",
+            "importance": "required"
+        }
+    ]
 }

@@ -1,5 +1,6 @@
 #include <Geode/Geode.hpp>
 #include <Geode/modify/CCTextInputNode.hpp>
+#include <alphalaneous.alphas_geode_utils/include/NodeModding.h>
 
 using namespace geode::prelude;
 
@@ -13,22 +14,9 @@ CCTextInputNode* g_selectedInput = nullptr;
 #define ENABLE_BUTTONS true
 #endif
 
-class $modify(MyCCTextInputNode, CCTextInputNode) {
-#ifdef GEODE_IS_WINDOWS
-	struct Fields {
-		// currently selected string (from left to right, until the cursor)
-		// or if cursor is at the end, the whole string
-		std::string m_string;
-		int m_pos;
-	};
-#endif
-
-	bool init(float p0, float p1, char const* p2, char const* p3, int p4, char const* p5) {
-		if (!CCTextInputNode::init(p0, p1, p2, p3, p4, p5)) {
-			return false;
-		}
-
-		if (!ENABLE_BUTTONS) return true;
+class $nodeModify(AlphaCCTextInputNode, CCTextInputNode) {
+	void modify() {
+		if (!ENABLE_BUTTONS) return;
 
 		CCMenu* specialButtons = CCMenu::create();
 
@@ -49,14 +37,14 @@ class $modify(MyCCTextInputNode, CCTextInputNode) {
 		copySpr->setScale(0.5f);
 		pasteSpr->setScale(0.5f);
 
-		CCScale9Sprite* copyBg = getChildOfType<CCScale9Sprite>(copySpr, 0);
-		CCScale9Sprite* pasteBg = getChildOfType<CCScale9Sprite>(pasteSpr, 0);
+		CCScale9Sprite* copyBg = copySpr->getChildByType<CCScale9Sprite>(0);
+		CCScale9Sprite* pasteBg = pasteSpr->getChildByType<CCScale9Sprite>(0);
 
 		copyBg->setOpacity(64);
 		pasteBg->setOpacity(64);
 
-		CCMenuItemSpriteExtra* copyButton = CCMenuItemSpriteExtra::create(copySpr, this, menu_selector(MyCCTextInputNode::onCopy));
-		CCMenuItemSpriteExtra* pasteButton = CCMenuItemSpriteExtra::create(pasteSpr, this, menu_selector(MyCCTextInputNode::onPaste));
+		CCMenuItemSpriteExtra* copyButton = CCMenuItemSpriteExtra::create(copySpr, this, menu_selector(AlphaCCTextInputNode::onCopy));
+		CCMenuItemSpriteExtra* pasteButton = CCMenuItemSpriteExtra::create(pasteSpr, this, menu_selector(AlphaCCTextInputNode::onPaste));
 	
 		specialButtons->addChild(copyButton);
 		specialButtons->addChild(pasteButton);
@@ -78,9 +66,33 @@ class $modify(MyCCTextInputNode, CCTextInputNode) {
 		specialButtons->setTouchPriority(-512);
 
 		addChild(specialButtons);
-
-		return true;
 	}
+	void onPaste(CCObject* obj) {
+
+		CCTextInputNode* node = reinterpret_cast<CCTextInputNode*>(this);
+
+		std::string text = node->getString();
+		text.append(clipboard::read());
+	
+		node->setString(text);
+	}
+
+	void onCopy(CCObject* obj) {
+		CCTextInputNode* node = reinterpret_cast<CCTextInputNode*>(this);
+
+		clipboard::write(node->getString());
+	}
+};
+
+class $modify(MyCCTextInputNode, CCTextInputNode) {
+#ifdef GEODE_IS_WINDOWS
+	struct Fields {
+		// currently selected string (from left to right, until the cursor)
+		// or if cursor is at the end, the whole string
+		std::string m_string;
+		int m_pos;
+	};
+#endif
 
 	bool onTextFieldAttachWithIME(cocos2d::CCTextFieldTTF* tField) {
 #ifdef GEODE_IS_WINDOWS
@@ -129,17 +141,6 @@ class $modify(MyCCTextInputNode, CCTextInputNode) {
 		}
 	}
 #endif
-
-	void onPaste(CCObject* obj) {
-		std::string text = getString();
-		text.append(clipboard::read());
-	
-		setString(text);
-	}
-
-	void onCopy(CCObject* obj) {
-		clipboard::write(getString());
-	}
 };
 
 #ifdef GEODE_IS_WINDOWS
