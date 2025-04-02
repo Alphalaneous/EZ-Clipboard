@@ -1,10 +1,11 @@
 {
-	"geode": "3.4.0",
+	"geode": "4.3.1",
 	"gd": {
-		"win": "2.206",
-		"android": "2.206"
+		"win": "2.2074",
+		"android": "2.2074",
+		"ios": "2.2074"
 	},
-	"version": "v1.1.5",
+	"version": "v1.1.6",
 	"id": "alphalaneous.ezclipboard",
 	"name": "EZ Clipboard",
 	"developer": "Alphalaneous",
